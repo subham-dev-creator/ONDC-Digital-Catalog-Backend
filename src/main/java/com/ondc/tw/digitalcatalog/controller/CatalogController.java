@@ -2,7 +2,6 @@ package com.ondc.tw.digitalcatalog.controller;
 
 import com.ondc.tw.digitalcatalog.dto.ProductDto;
 import com.ondc.tw.digitalcatalog.model.Product;
-import com.ondc.tw.digitalcatalog.model.MasterProduct;
 import com.ondc.tw.digitalcatalog.service.CatalogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +19,19 @@ public class CatalogController {
         catalogService.addProducts(products);
     }
 
-    @GetMapping(path = "/catalog/products/list")
-    public List<ProductDto> listProducts() {
-        return catalogService.listProducts();
+    @GetMapping(path = "/catalog/products/get")
+    public List<ProductDto> getProducts() {
+        return catalogService.getProducts();
     }
+
+    @PutMapping(path = "/catalog/products/update")
+    public void updateProducts(@RequestBody List<Product> products){
+        catalogService.updateProducts(products);
+    }
+
+    @DeleteMapping(path = "/catalog/products/delete")
+    public void deleteProducts(@RequestBody List<Product> products){
+        catalogService.deleteProducts(products);
+    }
+
 }

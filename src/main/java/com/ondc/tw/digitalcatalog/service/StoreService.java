@@ -11,6 +11,7 @@ import java.util.List;
 public class StoreService {
 
     public List<Store> storeList = new ArrayList<>();
+
     public void createStore(StoreDTO storeDTO) {
         Store store = new Store();
         store.setName(storeDTO.getName());

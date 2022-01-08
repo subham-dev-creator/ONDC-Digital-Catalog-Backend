@@ -19,14 +19,14 @@ public class CatalogService {
     List<Product> storeProductList = new ArrayList<>();
 
     public void addProducts(List<Product> productList) {
-        for(Product product : productList) {
+        for (Product product : productList) {
             Product testProduct = findById(product.getMasterId());
             if (testProduct == null)
                 this.storeProductList.add(product);
         }
     }
 
-    public List<ProductDto> listProducts() {
+    public List<ProductDto> getProducts() {
         List<ProductDto> products = new ArrayList<>();
 
         for (Product product : storeProductList) {
@@ -48,8 +48,7 @@ public class CatalogService {
                 productDto.setSubCategory(masterProduct.getSubCategory());
 
                 products.add(productDto);
-            }
-            catch (Exception e){
+            } catch (Exception e) {
                 throw new IllegalArgumentException("No ID Found");
             }
         }
@@ -57,11 +56,30 @@ public class CatalogService {
         return products;
     }
 
-    public Product findById(UUID id){
-        for (Product product : storeProductList){
-            if(id.equals(product.getMasterId()))
+    public Product findById(UUID id) {
+        for (Product product : storeProductList) {
+            if (id.equals(product.getMasterId()))
                 return product;
         }
         return null;
     }
+
+    public void updateProducts(List<Product> productList) {
+        for (Product product : productList) {
+            Product testProduct = findById(product.getMasterId());
+            if (testProduct != null) {
+                testProduct.setPrice(product.getPrice());
+                testProduct.setQuantity(product.getQuantity());
+            }
+        }
+    }
+
+    public void deleteProducts(List<Product> productList) {
+        for (Product product : productList) {
+            Product testProduct = findById(product.getMasterId());
+            storeProductList.remove(testProduct);
+        }
+    }
+
+
 }
