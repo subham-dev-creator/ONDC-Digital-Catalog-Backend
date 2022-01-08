@@ -1,5 +1,6 @@
 package com.ondc.tw.digitalcatalog.service;
 
+import com.ondc.tw.digitalcatalog.model.Item;
 import com.ondc.tw.digitalcatalog.model.MasterItem;
 import org.springframework.stereotype.Service;
 
@@ -10,16 +11,16 @@ import java.util.stream.Collectors;
 @Service
 public class CatalogService {
     List<MasterItem> masterItemList = new ArrayList<>();
+    List<Item> itemList = new ArrayList<>();
 
     public List<MasterItem> searchItems(String query) {
         List<MasterItem> collect = new ArrayList<>();
-        if(barcodeValidator(query)){
+        if (barcodeValidator(query)) {
             collect = masterItemList.stream().filter(item -> item.getBarcode().equals(query)).collect(Collectors.toList());
-        }
-        else{
+        } else {
             String[] words = query.split("\\s+");
             List<MasterItem> wordCollect = new ArrayList<>();
-            for(String word : words){
+            for (String word : words) {
                 wordCollect = masterItemList.stream().filter(item -> item.getSku().contains(word)).collect(Collectors.toList());
                 collect.addAll(wordCollect);
             }
@@ -27,9 +28,9 @@ public class CatalogService {
         return collect;
     }
 
-     boolean barcodeValidator(String query) {
+    boolean barcodeValidator(String query) {
         char[] array = query.toCharArray();
-        for(char index : array){
+        for (char index : array) {
             try {
                 Integer.parseInt(String.valueOf(index));
             } catch (NumberFormatException e) {
@@ -37,5 +38,13 @@ public class CatalogService {
             }
         }
         return true;
+    }
+
+    public void addItem(Item item) {
+        itemList.add(item);
+    }
+
+    public List<Item> listItem() {
+        return itemList;
     }
 }
