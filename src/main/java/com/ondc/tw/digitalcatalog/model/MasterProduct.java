@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -14,7 +15,7 @@ import javax.persistence.Id;
 public final class MasterProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private UUID id;
 
     private String barcode;
 
@@ -35,6 +36,7 @@ public final class MasterProduct {
     private String subCategory;
 
     public MasterProduct(String barcode, String sku, String weight, String unit, String mrp, String image128, String image256, String parentCategory, String subCategory) {
+        this.id = UUID.randomUUID();
         this.barcode = barcode;
         this.sku = sku;
         this.weight = weight;

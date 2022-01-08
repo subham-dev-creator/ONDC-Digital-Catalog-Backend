@@ -16,7 +16,7 @@ public class CatalogController {
     private CatalogService catalogService;
 
     @PostMapping(path = "/catalog/products/add")
-    public void addProducts(List<Product> products) {
+    public void addProducts(@RequestBody List<Product> products) {
         catalogService.addProducts(products);
     }
 

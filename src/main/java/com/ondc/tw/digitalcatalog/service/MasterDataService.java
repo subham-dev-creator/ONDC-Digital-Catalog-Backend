@@ -2,6 +2,7 @@ package com.ondc.tw.digitalcatalog.service;
 
 import com.ondc.tw.digitalcatalog.model.MasterProduct;
 import com.ondc.tw.digitalcatalog.model.Product;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,13 +12,18 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Service
 public class MasterDataService {
     static List<MasterProduct> masterProductList;
 
     static {
         masterProductList = readProductsFromCSV("catalog_sample.csv");
+        for (MasterProduct master: masterProductList) {
+            System.out.println(master.getId()+"   " +master.getSku());
+        }
     }
 
     public List<MasterProduct> searchProducts(String query) {
@@ -28,7 +34,7 @@ public class MasterDataService {
             String[] words = query.split("\\s+");
             List<MasterProduct> wordCollect;
             for (String word : words) {
-                wordCollect = masterProductList.stream().filter(product -> product.getSku().contains(word)).collect(Collectors.toList());
+                wordCollect = masterProductList.stream().filter(product -> product.getSku().toLowerCase().contains(word.toLowerCase())).collect(Collectors.toList());
                 collect.addAll(wordCollect);
             }
         }
@@ -79,9 +85,9 @@ public class MasterDataService {
         return new MasterProduct(barcode, sku, weight, unit, mrp, image128, image256, parentCategory, subCategory);
     }
 
-    public MasterProduct findById(long id){
+    public MasterProduct findById(UUID id){
         for (MasterProduct masterProduct : masterProductList){
-            if(id==masterProduct.getId())
+            if(id.equals(masterProduct.getId()))
                 return masterProduct;
         }
         return null;
