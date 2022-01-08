@@ -1,5 +1,6 @@
 package com.ondc.tw.digitalcatalog.controller;
 
+import com.ondc.tw.digitalcatalog.dto.ProductDto;
 import com.ondc.tw.digitalcatalog.model.Product;
 import com.ondc.tw.digitalcatalog.model.MasterProduct;
 import com.ondc.tw.digitalcatalog.service.CatalogService;
@@ -14,18 +15,13 @@ public class CatalogController {
     @Autowired
     private CatalogService catalogService;
 
-    @PostMapping(path = "/catalog/item/add")
-    public void addItem(Product product) {
-        catalogService.addItem(product);
+    @PostMapping(path = "/catalog/products/add")
+    public void addProducts(List<Product> products) {
+        catalogService.addProducts(products);
     }
 
-    @GetMapping(path = "catalog/master/search")
-    public List<MasterProduct> searchItems(@RequestParam String query) {
-        return catalogService.searchItems(query);
-    }
-
-    @GetMapping(path = "/catalog/item/list")
-    public List<Product> listItem() {
-        return catalogService.listItem();
+    @GetMapping(path = "/catalog/products/list")
+    public List<ProductDto> listProducts() {
+        return catalogService.listProducts();
     }
 }

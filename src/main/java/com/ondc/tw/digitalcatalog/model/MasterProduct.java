@@ -11,9 +11,9 @@ import javax.persistence.Id;
 @Data
 @Entity
 @NoArgsConstructor
-public class MasterProduct {
+public final class MasterProduct {
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private String barcode;

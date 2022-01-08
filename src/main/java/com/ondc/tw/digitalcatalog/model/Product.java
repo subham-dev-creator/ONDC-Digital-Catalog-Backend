@@ -10,7 +10,6 @@ import javax.persistence.Id;
 @Data
 @Entity
 public class Product {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -19,4 +18,5 @@ public class Product {
 
     private long quantity;
 
+    private long masterId;
 }
