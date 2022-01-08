@@ -9,23 +9,27 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CatalogService {
     @Autowired
     MasterDataService masterDataService;
 
-    List<Product> productList = new ArrayList<>();
+    List<Product> storeProductList = new ArrayList<>();
 
     public void addProducts(List<Product> productList) {
-
-        this.productList.addAll(productList);
+        for(Product product : productList) {
+            Product testProduct = findById(product.getMasterId());
+            if (testProduct == null)
+                this.storeProductList.add(product);
+        }
     }
 
     public List<ProductDto> listProducts() {
         List<ProductDto> products = new ArrayList<>();
 
-        for (Product product : productList) {
+        for (Product product : storeProductList) {
             System.out.println(product.toString());
             ProductDto productDto = new ProductDto();
             productDto.setPrice(product.getPrice());
@@ -51,5 +55,13 @@ public class CatalogService {
         }
 
         return products;
+    }
+
+    public Product findById(UUID id){
+        for (Product product : storeProductList){
+            if(id.equals(product.getMasterId()))
+                return product;
+        }
+        return null;
     }
 }
