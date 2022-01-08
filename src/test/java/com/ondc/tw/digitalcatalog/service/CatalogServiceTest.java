@@ -23,4 +23,21 @@ class CatalogServiceTest {
         assertEquals(catalogService.barcodeValidator(query),false);
     }
 
+    @Test
+    void testTextValidator() {
+        String text = "Britannia biscuits packet orange";
+        CatalogService catalogService = new CatalogService();
+        MasterItem item = new MasterItem();
+        item.setSku("biscuits");
+        MasterItem item2 = new MasterItem();
+        item2.setSku("soap");
+        MasterItem item3 = new MasterItem();
+        item3.setSku("orange");
+
+        catalogService.masterItemList = Arrays.asList(item, item2, item3);
+
+        List<MasterItem> items = catalogService.searchItems(text);
+        assertEquals(items.size(),2);
+    }
+
 }

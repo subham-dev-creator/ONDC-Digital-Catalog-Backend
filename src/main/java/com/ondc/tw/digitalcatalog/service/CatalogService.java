@@ -13,14 +13,15 @@ public class CatalogService {
 
     public List<MasterItem> searchItems(String query) {
         List<MasterItem> collect = new ArrayList<>();
-
         if(barcodeValidator(query)){
             collect = masterItemList.stream().filter(item -> item.getBarcode().equals(query)).collect(Collectors.toList());
         }
         else{
             String[] words = query.split("\\s+");
+            List<MasterItem> wordCollect = new ArrayList<>();
             for(String word : words){
-                collect = masterItemList.stream().filter(item -> item.getSku().contains(word)).collect(Collectors.toList());
+                wordCollect = masterItemList.stream().filter(item -> item.getSku().contains(word)).collect(Collectors.toList());
+                collect.addAll(wordCollect);
             }
         }
         return collect;
