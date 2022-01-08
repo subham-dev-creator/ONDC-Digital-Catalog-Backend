@@ -1,6 +1,10 @@
 package com.ondc.tw.digitalcatalog.service;
 
+import com.ondc.tw.digitalcatalog.model.MasterItem;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,4 +22,5 @@ class CatalogServiceTest {
         CatalogService catalogService = new CatalogService();
         assertEquals(catalogService.barcodeValidator(query),false);
     }
+
 }
