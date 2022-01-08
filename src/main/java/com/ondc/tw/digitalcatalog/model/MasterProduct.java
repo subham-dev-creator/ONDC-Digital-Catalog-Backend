@@ -9,7 +9,7 @@ import javax.persistence.Id;
 
 @Data
 @Entity
-public class MasterItem {
+public class MasterProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

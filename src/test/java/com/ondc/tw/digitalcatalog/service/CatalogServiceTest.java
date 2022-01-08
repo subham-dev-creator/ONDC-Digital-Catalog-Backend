@@ -1,6 +1,6 @@
 package com.ondc.tw.digitalcatalog.service;
 
-import com.ondc.tw.digitalcatalog.model.MasterItem;
+import com.ondc.tw.digitalcatalog.model.MasterProduct;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -27,16 +27,16 @@ class CatalogServiceTest {
     void testTextValidator() {
         String text = "Britannia biscuits packet orange";
         CatalogService catalogService = new CatalogService();
-        MasterItem item = new MasterItem();
+        MasterProduct item = new MasterProduct();
         item.setSku("biscuits");
-        MasterItem item2 = new MasterItem();
+        MasterProduct item2 = new MasterProduct();
         item2.setSku("soap");
-        MasterItem item3 = new MasterItem();
+        MasterProduct item3 = new MasterProduct();
         item3.setSku("orange");
 
-        catalogService.masterItemList = Arrays.asList(item, item2, item3);
+        catalogService.masterProductList = Arrays.asList(item, item2, item3);
 
-        List<MasterItem> items = catalogService.searchItems(text);
+        List<MasterProduct> items = catalogService.searchItems(text);
         assertEquals(items.size(),2);
     }
 

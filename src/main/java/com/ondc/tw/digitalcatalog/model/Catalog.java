@@ -9,5 +9,5 @@ import java.util.List;
 @Entity
 public class Catalog {
 
-    List<Item> itemList;
+    List<Product> productList;
 }
