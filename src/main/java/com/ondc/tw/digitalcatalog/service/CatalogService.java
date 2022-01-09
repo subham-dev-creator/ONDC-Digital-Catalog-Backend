@@ -1,10 +1,8 @@
 package com.ondc.tw.digitalcatalog.service;
 
 import com.ondc.tw.digitalcatalog.model.*;
-import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.*;
 
@@ -16,11 +14,11 @@ public class CatalogService {
     @Autowired
     StoreService storeService;
 
-//   Map<UUID,CatalogProduct> catalogProductMap = new HashMap<>();
-
     private Map<UUID, CatalogProduct> getCatalog(String id) {
         Store store = storeService.storeMap.get(id);
         Catalog catalog = store.getCatalog();
+        if(catalog.getCatalogProductMap()==null)
+            catalog.setCatalogProductMap(new HashMap<>());
         return catalog.getCatalogProductMap();
     }
 
@@ -44,34 +42,8 @@ public class CatalogService {
 
     public List<CatalogProduct> getProducts(String id) {
         Map<UUID, CatalogProduct> catalogProductMap = getCatalog(id);
-
-        List<CatalogProduct> products = new ArrayList<>();
-
-        for (CatalogProduct product : catalogProductMap.values()) {
-            System.out.println(product.toString());
-            CatalogProduct catalogProduct = new CatalogProduct();
-            catalogProduct.setPrice(product.getPrice());
-            catalogProduct.setQuantity(product.getQuantity());
-
-            try {
-                MasterProduct masterProduct = masterDataService.findById(product.getId());
-
-                catalogProduct.setId(masterProduct.getId());
-                catalogProduct.setSku(masterProduct.getSku());
-                catalogProduct.setWeight(masterProduct.getWeight());
-                catalogProduct.setUnit(masterProduct.getUnit());
-                catalogProduct.setMrp(masterProduct.getMrp());
-                catalogProduct.setImage128(masterProduct.getImage128());
-                catalogProduct.setImage256(masterProduct.getImage256());
-                catalogProduct.setParentCategory(masterProduct.getParentCategory());
-                catalogProduct.setSubCategory(masterProduct.getSubCategory());
-
-                products.add(catalogProduct);
-            } catch (Exception e) {
-                throw new IllegalArgumentException("No ID Found");
-            }
-        }
-        return products;
+        List<CatalogProduct> catalogProductList= new ArrayList<>(catalogProductMap.values());
+        return catalogProductList;
     }
 
     public CatalogProduct findById(UUID id, String mobileId) {
