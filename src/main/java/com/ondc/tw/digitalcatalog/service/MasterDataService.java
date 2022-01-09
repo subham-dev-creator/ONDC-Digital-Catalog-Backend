@@ -77,12 +77,12 @@ public class MasterDataService {
         String sku = metadata[1];
         String weight = metadata[2];
         String unit = metadata[3];
-        String mrp = metadata[4];
-        String image128 = metadata[5];
-        String image256 = metadata[6];
-        String parentCategory = metadata[7];
-        String subCategory = metadata[8];
-        return new MasterProduct(barcode, sku, weight, unit, mrp, image128, image256, parentCategory, subCategory);
+        String subCategory = metadata[4];
+        String parentCategory = metadata[5];
+        String image128 = metadata[6];
+        String image256 = metadata[7];
+        String mrp = metadata[8];
+        return new MasterProduct(barcode, sku, weight, unit, mrp, image128, image256, subCategory, parentCategory);
     }
 
     public MasterProduct findById(UUID id){
