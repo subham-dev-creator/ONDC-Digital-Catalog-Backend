@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.util.HashMap;
 import java.util.UUID;
 
 @Data
@@ -31,6 +32,8 @@ public final class MasterProduct {
     private String parentCategory;
 
     private String subCategory;
+
+    private HashMap<String, String> additionalInfo;
 
     public MasterProduct(String barcode, String sku, String weight, String unit, String mrp, String image128, String image256, String parentCategory, String subCategory) {
         this.id = UUID.randomUUID();

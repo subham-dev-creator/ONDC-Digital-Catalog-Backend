@@ -3,10 +3,11 @@ package com.ondc.tw.digitalcatalog.model;
 import lombok.Data;
 
 import javax.persistence.Entity;
-import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @Data
 @Entity
 public class Catalog {
-    List<Product> productList;
+    private Map<UUID, CatalogProduct> catalogProductMap;
 }
