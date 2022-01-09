@@ -1,11 +1,11 @@
 package com.ondc.tw.digitalcatalog.service;
 
-import com.ondc.tw.digitalcatalog.dto.ProductDto;
-import com.ondc.tw.digitalcatalog.model.Product;
+import com.ondc.tw.digitalcatalog.model.CatalogProduct;
 import com.ondc.tw.digitalcatalog.model.MasterProduct;
+import com.ondc.tw.digitalcatalog.model.Product;
+import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 import java.util.*;
 
@@ -14,39 +14,46 @@ public class CatalogService {
     @Autowired
     MasterDataService masterDataService;
 
-   Map<UUID,Product> catalogProductMap = new HashMap<>();
+   Map<UUID, CatalogProduct> catalogProductMap = new HashMap<>();
 
     public void addProducts(List<Product> productList) {
         for (Product product : productList) {
-            Product testProduct = findById(product.getMasterId());
-            if (testProduct == null)
-                this.catalogProductMap.put(product.getMasterId(), product);
+            CatalogProduct catalogProduct = findById(product.getMasterId());
+            if (catalogProduct == null)
+                this.catalogProductMap.put(product.getMasterId(), CatalogProduct.from(masterDataService.findById(product.getMasterId()), product));
         }
     }
 
-    public List<ProductDto> getProducts() {
-        List<ProductDto> products = new ArrayList<>();
+    public void addCustomProduct(CatalogProduct catalogProduct)
+    {
+        val id = UUID.randomUUID();
+        catalogProduct.setId(id);
+        this.catalogProductMap.put(id,catalogProduct);
+    }
 
-        for (Product product : catalogProductMap.values()) {
+    public List<CatalogProduct> getProducts() {
+        List<CatalogProduct> products = new ArrayList<>();
+
+        for (CatalogProduct product : catalogProductMap.values()) {
             System.out.println(product.toString());
-            ProductDto productDto = new ProductDto();
-            productDto.setPrice(product.getPrice());
-            productDto.setQuantity(product.getQuantity());
+            CatalogProduct catalogProduct = new CatalogProduct();
+            catalogProduct.setPrice(product.getPrice());
+            catalogProduct.setQuantity(product.getQuantity());
 
             try {
-                MasterProduct masterProduct = masterDataService.findById(product.getMasterId());
+                MasterProduct masterProduct = masterDataService.findById(product.getId());
 
-                productDto.setId(masterProduct.getId());
-                productDto.setSku(masterProduct.getSku());
-                productDto.setWeight(masterProduct.getWeight());
-                productDto.setUnit(masterProduct.getUnit());
-                productDto.setMrp(masterProduct.getMrp());
-                productDto.setImage128(masterProduct.getImage128());
-                productDto.setImage256(masterProduct.getImage256());
-                productDto.setParentCategory(masterProduct.getParentCategory());
-                productDto.setSubCategory(masterProduct.getSubCategory());
+                catalogProduct.setId(masterProduct.getId());
+                catalogProduct.setSku(masterProduct.getSku());
+                catalogProduct.setWeight(masterProduct.getWeight());
+                catalogProduct.setUnit(masterProduct.getUnit());
+                catalogProduct.setMrp(masterProduct.getMrp());
+                catalogProduct.setImage128(masterProduct.getImage128());
+                catalogProduct.setImage256(masterProduct.getImage256());
+                catalogProduct.setParentCategory(masterProduct.getParentCategory());
+                catalogProduct.setSubCategory(masterProduct.getSubCategory());
 
-                products.add(productDto);
+                products.add(catalogProduct);
             } catch (Exception e) {
                 throw new IllegalArgumentException("No ID Found");
             }
@@ -54,14 +61,14 @@ public class CatalogService {
         return products;
     }
 
-    public Product findById(UUID id) {
+    public CatalogProduct findById(UUID id) {
         if(catalogProductMap.containsKey(id))
             return catalogProductMap.get(id);
         return null;
     }
 
     public void updateProducts(Product product) {
-            Product testProduct = findById(product.getMasterId());
+            CatalogProduct testProduct = findById(product.getMasterId());
             if (testProduct != null) {
                 testProduct.setPrice(product.getPrice());
                 testProduct.setQuantity(product.getQuantity());
