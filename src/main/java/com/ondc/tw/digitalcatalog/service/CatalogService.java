@@ -36,6 +36,7 @@ public class CatalogService {
             try {
                 MasterProduct masterProduct = masterDataService.findById(product.getMasterId());
 
+                productDto.setId(masterProduct.getId());
                 productDto.setSku(masterProduct.getSku());
                 productDto.setWeight(masterProduct.getWeight());
                 productDto.setUnit(masterProduct.getUnit());

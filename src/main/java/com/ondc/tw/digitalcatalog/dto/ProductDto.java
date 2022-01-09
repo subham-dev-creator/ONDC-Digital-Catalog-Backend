@@ -2,8 +2,12 @@ package com.ondc.tw.digitalcatalog.dto;
 
 import lombok.Data;
 
+import java.util.UUID;
+
 @Data
 public class ProductDto {
+    private UUID id;
+
     private double price;
 
     private long quantity;
