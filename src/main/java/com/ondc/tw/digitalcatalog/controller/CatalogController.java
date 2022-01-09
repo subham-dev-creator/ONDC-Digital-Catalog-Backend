@@ -25,12 +25,12 @@ public class CatalogController {
     }
 
     @PutMapping(path = "/catalog/products/update")
-    public void updateProducts(@RequestBody List<Product> products){
+    public void updateProducts(@RequestBody Product products){
         catalogService.updateProducts(products);
     }
 
     @DeleteMapping(path = "/catalog/products/delete")
-    public void deleteProducts(@RequestBody List<Product> products){
+    public void deleteProducts(@RequestBody Product products){
         catalogService.deleteProducts(products);
     }
 

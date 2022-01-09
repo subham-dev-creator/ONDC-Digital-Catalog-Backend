@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -18,11 +19,12 @@ import java.util.stream.Collectors;
 @Service
 public class MasterDataService {
     static List<MasterProduct> masterProductList;
+    static HashMap<UUID, MasterProduct> masterProductHashMap = new HashMap<>();
 
     static {
         masterProductList = readProductsFromCSV("catalog_sample.csv");
-        for (MasterProduct master: masterProductList) {
-            System.out.println(master.getId()+"   " +master.getSku());
+        for (MasterProduct masterProduct: masterProductList) {
+            masterProductHashMap.put(masterProduct.getId(), masterProduct);
         }
     }
 
@@ -86,10 +88,10 @@ public class MasterDataService {
     }
 
     public MasterProduct findById(UUID id){
-        for (MasterProduct masterProduct : masterProductList){
-            if(id.equals(masterProduct.getId()))
-                return masterProduct;
-        }
+            if(masterProductHashMap.containsKey(id)){
+                System.out.println("product found");
+                return masterProductHashMap.get(id);}
+        System.out.println("product not found");
         return null;
     }
 }
