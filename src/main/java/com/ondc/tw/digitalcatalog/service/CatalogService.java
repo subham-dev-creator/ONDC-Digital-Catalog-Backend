@@ -14,20 +14,20 @@ public class CatalogService {
     @Autowired
     MasterDataService masterDataService;
 
-   Map<UUID,Product> storeProductMap = new HashMap<>();
+   Map<UUID,Product> catalogProductMap = new HashMap<>();
 
     public void addProducts(List<Product> productList) {
         for (Product product : productList) {
             Product testProduct = findById(product.getMasterId());
             if (testProduct == null)
-                this.storeProductMap.put(product.getMasterId(), product);
+                this.catalogProductMap.put(product.getMasterId(), product);
         }
     }
 
     public List<ProductDto> getProducts() {
         List<ProductDto> products = new ArrayList<>();
 
-        for (Product product : storeProductMap.values()) {
+        for (Product product : catalogProductMap.values()) {
             System.out.println(product.toString());
             ProductDto productDto = new ProductDto();
             productDto.setPrice(product.getPrice());
@@ -55,8 +55,8 @@ public class CatalogService {
     }
 
     public Product findById(UUID id) {
-        if(storeProductMap.containsKey(id))
-            return storeProductMap.get(id);
+        if(catalogProductMap.containsKey(id))
+            return catalogProductMap.get(id);
         return null;
     }
 
@@ -69,6 +69,6 @@ public class CatalogService {
         }
 
     public void deleteProducts(Product product) {
-            storeProductMap.remove(product.getMasterId());
+            catalogProductMap.remove(product.getMasterId());
         }
     }

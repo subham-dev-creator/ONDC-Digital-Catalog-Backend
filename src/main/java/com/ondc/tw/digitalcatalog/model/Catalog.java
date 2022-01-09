@@ -8,6 +8,5 @@ import java.util.List;
 @Data
 @Entity
 public class Catalog {
-
     List<Product> productList;
 }

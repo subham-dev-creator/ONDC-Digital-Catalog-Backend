@@ -10,9 +10,6 @@ import java.util.UUID;
 @Entity
 public class Location {
 
-    @Id
-    private UUID id;
-
     private Address address;
 
     private GPSCoordinates gpsCoordinates;

@@ -4,19 +4,27 @@ import com.ondc.tw.digitalcatalog.dto.StoreDTO;
 import com.ondc.tw.digitalcatalog.model.Store;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class StoreService {
 
-    public List<Store> storeList = new ArrayList<>();
+    Map<String, Store> storeMap = new HashMap<>();
 
-    public void createStore(StoreDTO storeDTO) {
-        Store store = new Store();
-        store.setName(storeDTO.getName());
-        store.setContactNumberList(storeDTO.getContactNumberList());
-        store.setLocation(storeDTO.getLocation());
-        storeList.add(store);
+    public String createStore(StoreDTO storeDTO) {
+        if (!storeMap.containsKey(storeDTO.getContactNumberList().get(0))) {
+            Store store = new Store();
+            store.setId(store.getContactNumberList().get(0));
+            store.setName(storeDTO.getName());
+            store.setContactNumberList(storeDTO.getContactNumberList());
+            store.setLocation(storeDTO.getLocation());
+            storeMap.put(store.getId(), store);
+            return store.getId();
+        }
+        return null;
+    }
+
+    public Store getStore(String id) {
+        return storeMap.get(id);
     }
 }
