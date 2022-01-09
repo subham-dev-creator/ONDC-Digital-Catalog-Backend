@@ -12,9 +12,11 @@ public class StoreService {
     Map<String, Store> storeMap = new HashMap<>();
 
     public String createStore(StoreDTO storeDTO) {
+        if(storeDTO.getContactNumberList().size()==0)
+            return null;
         if (!storeMap.containsKey(storeDTO.getContactNumberList().get(0))) {
             Store store = new Store();
-            store.setId(store.getContactNumberList().get(0));
+            store.setId(storeDTO.getContactNumberList().get(0));
             store.setName(storeDTO.getName());
             store.setContactNumberList(storeDTO.getContactNumberList());
             store.setLocation(storeDTO.getLocation());
