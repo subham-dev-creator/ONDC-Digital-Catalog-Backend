@@ -1,11 +1,10 @@
 package com.ondc.tw.digitalcatalog.service;
 
-import com.ondc.tw.digitalcatalog.model.CatalogProduct;
-import com.ondc.tw.digitalcatalog.model.MasterProduct;
-import com.ondc.tw.digitalcatalog.model.Product;
+import com.ondc.tw.digitalcatalog.model.*;
 import lombok.val;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.*;
 
@@ -14,24 +13,38 @@ public class CatalogService {
     @Autowired
     MasterDataService masterDataService;
 
-   Map<UUID, CatalogProduct> catalogProductMap = new HashMap<>();
+    @Autowired
+    StoreService storeService;
 
-    public void addProducts(List<Product> productList) {
+//   Map<UUID,CatalogProduct> catalogProductMap = new HashMap<>();
+
+    private Map<UUID, CatalogProduct> getCatalog(String id) {
+        Store store = storeService.storeMap.get(id);
+        Catalog catalog = store.getCatalog();
+        return catalog.getCatalogProductMap();
+    }
+
+    public void addProducts(List<Product> productList, String id) {
+        Map<UUID, CatalogProduct> catalogProductMap = getCatalog(id);
+
         for (Product product : productList) {
-            CatalogProduct catalogProduct = findById(product.getMasterId());
+            CatalogProduct catalogProduct = findById(product.getMasterId(), id);
             if (catalogProduct == null)
-                this.catalogProductMap.put(product.getMasterId(), CatalogProduct.from(masterDataService.findById(product.getMasterId()), product));
+                catalogProductMap.put(product.getMasterId(), CatalogProduct.from(masterDataService.findById(product.getMasterId()), product));
         }
     }
 
-    public void addCustomProduct(CatalogProduct catalogProduct)
-    {
-        val id = UUID.randomUUID();
-        catalogProduct.setId(id);
-        this.catalogProductMap.put(id,catalogProduct);
+    public void addCustomProduct(CatalogProduct catalogProduct, String id) {
+        Map<UUID, CatalogProduct> catalogProductMap = getCatalog(id);
+
+        UUID customProductId = UUID.randomUUID();
+        catalogProduct.setId(customProductId);
+        catalogProductMap.put(customProductId, catalogProduct);
     }
 
-    public List<CatalogProduct> getProducts() {
+    public List<CatalogProduct> getProducts(String id) {
+        Map<UUID, CatalogProduct> catalogProductMap = getCatalog(id);
+
         List<CatalogProduct> products = new ArrayList<>();
 
         for (CatalogProduct product : catalogProductMap.values()) {
@@ -61,21 +74,25 @@ public class CatalogService {
         return products;
     }
 
-    public CatalogProduct findById(UUID id) {
-        if(catalogProductMap.containsKey(id))
+    public CatalogProduct findById(UUID id, String mobileId) {
+        Map<UUID, CatalogProduct> catalogProductMap = getCatalog(mobileId);
+
+        if (catalogProductMap.containsKey(id))
             return catalogProductMap.get(id);
         return null;
     }
 
-    public void updateProducts(Product product) {
-            CatalogProduct testProduct = findById(product.getMasterId());
-            if (testProduct != null) {
-                testProduct.setPrice(product.getPrice());
-                testProduct.setQuantity(product.getQuantity());
-            }
-        }
-
-    public void deleteProducts(Product product) {
-            catalogProductMap.remove(product.getMasterId());
+    public void updateProducts(Product product, String id) {
+        CatalogProduct testProduct = findById(product.getMasterId(), id);
+        if (testProduct != null) {
+            testProduct.setPrice(product.getPrice());
+            testProduct.setQuantity(product.getQuantity());
         }
     }
+
+    public void deleteProducts(Product product, String id) {
+        Map<UUID, CatalogProduct> catalogProductMap = getCatalog(id);
+
+        catalogProductMap.remove(product.getMasterId());
+    }
+}

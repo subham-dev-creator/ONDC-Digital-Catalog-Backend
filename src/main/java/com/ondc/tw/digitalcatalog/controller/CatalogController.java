@@ -16,28 +16,28 @@ public class CatalogController {
     private CatalogService catalogService;
 
     @PostMapping(path = "/catalog/products/add")
-    public void addProducts(@RequestBody List<Product> products) {
-        catalogService.addProducts(products);
+    public void addProducts(@RequestBody List<Product> products, @RequestHeader("id") String id) {
+        catalogService.addProducts(products, id);
     }
 
     @PostMapping(path = "/catalog/products/addCustomProduct")
-    public void addCustomProducts(@RequestBody CatalogProduct product) {
-        catalogService.addCustomProduct(product);
+    public void addCustomProducts(@RequestBody CatalogProduct product, @RequestHeader("id") String id) {
+        catalogService.addCustomProduct(product, id);
     }
 
     @GetMapping(path = "/catalog/products/get")
-    public List<CatalogProduct> getProducts() {
-        return catalogService.getProducts();
+    public List<CatalogProduct> getProducts(@RequestHeader("id") String id) {
+        return catalogService.getProducts(id);
     }
 
     @PutMapping(path = "/catalog/products/update")
-    public void updateProducts(@RequestBody Product products){
-        catalogService.updateProducts(products);
+    public void updateProducts(@RequestBody Product products, @RequestHeader("id") String id){
+        catalogService.updateProducts(products, id);
     }
 
     @DeleteMapping(path = "/catalog/products/delete")
-    public void deleteProducts(@RequestBody Product products){
-        catalogService.deleteProducts(products);
+    public void deleteProducts(@RequestBody Product products, @RequestHeader("id") String id){
+        catalogService.deleteProducts(products, id);
     }
 
 }

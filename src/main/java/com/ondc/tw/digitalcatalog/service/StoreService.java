@@ -1,6 +1,7 @@
 package com.ondc.tw.digitalcatalog.service;
 
 import com.ondc.tw.digitalcatalog.dto.StoreDTO;
+import com.ondc.tw.digitalcatalog.model.Catalog;
 import com.ondc.tw.digitalcatalog.model.Store;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ public class StoreService {
             store.setName(storeDTO.getName());
             store.setContactNumberList(storeDTO.getContactNumberList());
             store.setLocation(storeDTO.getLocation());
+            store.setCatalog(new Catalog());
             storeMap.put(store.getId(), store);
             return store.getId();
         }
