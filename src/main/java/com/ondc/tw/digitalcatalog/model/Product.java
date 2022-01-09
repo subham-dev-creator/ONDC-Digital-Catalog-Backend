@@ -10,7 +10,7 @@ import java.util.UUID;
 @Entity
 public class Product {
     @Id
-    private long id;
+    private UUID id;
 
     private double price;
 

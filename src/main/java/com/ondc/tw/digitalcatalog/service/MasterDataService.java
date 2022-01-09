@@ -1,7 +1,6 @@
 package com.ondc.tw.digitalcatalog.service;
 
 import com.ondc.tw.digitalcatalog.model.MasterProduct;
-import com.ondc.tw.digitalcatalog.model.Product;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -23,7 +22,7 @@ public class MasterDataService {
 
     static {
         masterProductList = readProductsFromCSV("catalog_sample.csv");
-        for (MasterProduct masterProduct: masterProductList) {
+        for (MasterProduct masterProduct : masterProductList) {
             masterProductHashMap.put(masterProduct.getId(), masterProduct);
         }
     }
@@ -87,10 +86,11 @@ public class MasterDataService {
         return new MasterProduct(barcode, sku, weight, unit, mrp, image128, image256, subCategory, parentCategory);
     }
 
-    public MasterProduct findById(UUID id){
-            if(masterProductHashMap.containsKey(id)){
-                System.out.println("product found");
-                return masterProductHashMap.get(id);}
+    public MasterProduct findById(UUID id) {
+        if (masterProductHashMap.containsKey(id)) {
+            System.out.println("product found");
+            return masterProductHashMap.get(id);
+        }
         System.out.println("product not found");
         return null;
     }
