@@ -5,10 +5,10 @@ import com.ondc.tw.digitalcatalog.model.Product;
 import com.ondc.tw.digitalcatalog.service.CatalogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 public class CatalogController {
 
     @Autowired
